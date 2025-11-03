@@ -3,20 +3,23 @@ import bodyParser from "body-parser";
 
 const app = express();
 
-// ✅ Middleware
+// ✅ Proper body parsers
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Root check
+// ✅ Root route
 app.get("/", (req, res) => {
   res.send("Visa Backend is running ✅");
 });
 
-// ✅ Payment verify route
+// ✅ Payment route
 app.post("/api/payment/verify", (req, res) => {
   console.log("Payment received:", req.body);
-  res.json({ message: "Payment verified successfully" });
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: "No JSON body received" });
+  }
+  res.json({ message: "Payment verified successfully", data: req.body });
 });
 
 const PORT = process.env.PORT || 10000;
