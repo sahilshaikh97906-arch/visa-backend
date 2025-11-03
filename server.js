@@ -2,7 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 
 const app = express();
+
+// ✅ Middleware
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ✅ Root check
 app.get("/", (req, res) => {
